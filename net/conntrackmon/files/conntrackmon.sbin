@@ -1,0 +1,7 @@
+#!/bin/sh
+/usr/sbin/conntrack "$@" |
+	if [ -s "$conntrackmon_filter_script" ]; then
+		sed -r -f "$conntrackmon_filter_script"
+	else
+		cat
+	fi
