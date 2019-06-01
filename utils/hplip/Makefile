@@ -84,9 +84,6 @@ define Package/hplip-common/install
 
 	$(INSTALL_DIR) $(1)/usr/share/hplip/data/models/
 	$(CP) $(PKG_BUILD_DIR)/data/models/models.dat $(1)/usr/share/hplip/data/models/
-
-	$(INSTALL_DIR) $(1)/etc/hotplug.d/usb/
-	$(INSTALL_BIN) ./files/20-hplip $(1)/etc/hotplug.d/usb/
 endef
 
 define Package/hplip-sane/install
