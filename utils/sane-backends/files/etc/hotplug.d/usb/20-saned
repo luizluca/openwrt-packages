@@ -1,0 +1,44 @@
+#!/bin/sh
+
+[ "$ACTION" = "add" ] || exit 0
+[ "$DEVTYPE" = "usb_interface" ] || exit 0
+
+SANE_GROUP=saned
+grep -q -E "^$SANE_GROUP:" /etc/group || exit 0
+
+# for /dev/bus/usb/*/*
+uevents="/sys$DEVPATH/uevent /sys$DEVPATH/../uevent"
+saned_access=""
+
+# USB interface class is printer (0x07)
+if [ "${INTERFACE%%/*}" = 7 ]; then
+	# for /dev/usb/lp*
+	uevents="$uevents /sys$DEVPATH/usbmisc/*/uevent"
+
+	# allow :saned to rebind an usb device to usblp
+	driver="$(readlink -f /sys$DEVPATH/driver)"
+	if [ "${driver##*/}" = usblp ] && [ -e "$driver/bind" ]; then
+		# for /sys/bus/usb/drivers/usblp/bind
+		saned_access="$saned_access $driver/bind"
+	fi
+# HP scanner-only: grep tech-type=0 -A2 /usr/share/hplip/data/models/models.dat
+elif echo ${PRODUCT} | grep -q -E "^3f0/(5305|5305|5605|5705|5805|ba2a|ba2a|b92a|b92a|8411)/"; then
+	true
+# Test all SANE supported USB scanner? (about 1k compressed)
+else
+	exit 0
+fi
+
+for uevent in $uevents; do
+	[ -r "$uevent" ] &&
+		devname=$(grep -E ^DEVNAME= "$uevent") &&
+		saned_access="$saned_access /dev/${devname#*=}"
+done
+
+for path in $saned_access; do
+	logger -t "hotplug(usb/20-saned-printers)" "Granting group $SANE_GROUP access to $path"
+	chgrp $SANE_GROUP "$path"
+	chmod g+rw "$path"
+done
+
+

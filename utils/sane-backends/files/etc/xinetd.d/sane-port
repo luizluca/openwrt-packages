@@ -8,7 +8,7 @@ service sane-port
 	port        = 6566
 	wait        = no
 	user        = root
-	group       = root
+	group       = saned
 	server      = /usr/sbin/saned
 	disable     = yes
 }
