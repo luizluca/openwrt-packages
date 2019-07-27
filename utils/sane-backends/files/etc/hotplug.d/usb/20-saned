@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ "$ACTION" = "add" ] || exit 0
+[ "$ACTION" != "add" ] && [ "$ACTION" != "bind" ] && exit 0
 [ "$DEVTYPE" = "usb_interface" ] || exit 0
 
 SANE_GROUP=saned
@@ -8,13 +8,10 @@ grep -q -E "^$SANE_GROUP:" /etc/group || exit 0
 
 # for /dev/bus/usb/*/*
 uevents="/sys$DEVPATH/uevent /sys$DEVPATH/../uevent"
-saned_access=""
+saned_access="/etc/saned/dll.conf /etc/saned/saned.conf"
 
 # USB interface class is printer (0x07)
 if [ "${INTERFACE%%/*}" = 7 ]; then
-	# for /dev/usb/lp*
-	uevents="$uevents /sys$DEVPATH/usbmisc/*/uevent"
-
 	# allow :saned to rebind an usb device to usblp
 	driver="$(readlink -f /sys$DEVPATH/driver)"
 	if [ "${driver##*/}" = usblp ] && [ -e "$driver/bind" ]; then

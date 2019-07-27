@@ -10,7 +10,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=sane-backends
 PKG_VERSION:=1.0.27
-PKG_RELEASE:=4
+PKG_RELEASE:=5
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://fossies.org/linux/misc \
     https://alioth.debian.org/frs/download.php/file/4146/
@@ -126,7 +126,7 @@ $(call Package/sane-backends/Default)
   CATEGORY:=Utilities
   DEPENDS:=+libsane
   TITLE+= (network daemon)
-  USERID:=saned:saned
+  USERID:=saned=394:saned=394
 endef
 
 define Package/sane-daemon/description
