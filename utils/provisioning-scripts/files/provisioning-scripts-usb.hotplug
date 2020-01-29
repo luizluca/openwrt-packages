@@ -1,0 +1,39 @@
+#!/bin/sh
+#
+# Detect device with provisioning file
+#
+case "$ACTION" in
+	add) true;;
+	remove) exit 0 ;;
+esac
+
+case "$DEVTYPE" in
+	partition) true;;
+	*) exit 0 ;;
+esac
+
+log() {
+	tag=/etc/hotplug.d/block/01-provisioning-scripts-usb
+	echo "$tag: $*" >> /tmp/provisioning-scripts.log
+	echo "$tag: $*" > /dev/console
+	logger -t "$tag" -s "$*"
+}
+
+PROVISIONED_FLAG=/etc/provisioning-scripts/provisioned
+if [ -e "$PROVISIONED_FLAG" ]; then
+	log "Already provisioned. Ignoring block device $DEVNAME"
+       	exit 0
+fi
+
+set -e 
+
+tmpdir=$(mktemp -d -t provisioning-scripts.XXXXXXX)
+trap "rm -rf '$tmpdir'" EXIT
+
+log "Mounting block device $DEVNAME"
+mount -r /dev/$DEVNAME $tmpdir
+trap "umount $tmpdir; rm -rf '$tmpdir'" EXIT
+
+log "Calling /sbin/provision '$tmpdir'"
+flock -n /tmp/provision.lock /sbin/provision "$tmpdir" ||
+	log "Failed to call /sbin/provision '$tmpdir'"
