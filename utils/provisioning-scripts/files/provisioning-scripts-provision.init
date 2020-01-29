@@ -1,0 +1,46 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2020 Luiz Angelo Daros de Luca <luizluca@gmail.com>
+
+# After done
+START=96
+USE_PROCD=1
+
+log() {
+	tag=/etc/init.d/provision
+	echo "$tag: $*" >> /tmp/provisioning-scripts.log
+	echo "$tag: $*" > /dev/console
+	logger -t "$tag" -s "$*"
+}
+
+start_service() {
+	PROVISIONED_FLAG=/etc/provisioning-scripts/provisioned
+	PROVISION_RUNONCE=/etc/provisioning-scripts/runonce
+	if ! [ -e "$PROVISION_RUNONCE" ]; then
+		log "First boot: Letting provisioning-scripts run this time"
+		touch "$PROVISION_RUNONCE"
+	else
+		# Disable auto-provisioning on the second boot
+		log "Second boot: removing provisioning-scripts external interfaces"
+		rm -f /www/cgi-bin/provision /www/provision.html
+		rm -f /etc/hotplug.d/block/01-provisioning-scripts-usb
+		/etc/init.d/provision disable
+	fi
+
+	if ! [ -e "$PROVISIONED_FLAG" ]; then
+		log "System not provisioned yet. Nothing else to do"
+		return
+	fi
+
+	if [ "$(cat "$PROVISIONED_FLAG")" = reboot ]; then
+		if [ -z "$( grep ' /overlay ' /proc/mounts )" ]; then
+			log "Previous provisioning requires a reboot but system does not have /overlay mounted. Do not reboot!"
+			return
+		fi
+
+		log "Previous provisioning requires a reboot. Doing it now"
+		echo > "$PROVISIONED_FLAG"
+		sync
+		reboot
+	fi 
+
+}
