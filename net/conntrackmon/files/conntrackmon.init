@@ -8,15 +8,23 @@ PROG=/usr/sbin/$APPNAME
 start_service() {
 	config_load $APPNAME
 
+	local filter_script
 	filter_script=/var/run/$APPNAME.sed
 	true > "$filter_script"
+
+	set -- -E conntrack --output extended
+
+	local buffer_size
+	config_get buffer_size "$APPNAME" buffer_size
+	[ -z "$buffer_size" ] ||
+		set -- "$@" "--buffer-size=$buffer_size"
 
 	append_filter() {
 		echo "$1" >> $filter_script
 	}
 	config_list_foreach "$APPNAME" sed_filter append_filter
 
-	set -- -E conntrack --output extended
+	local optname
 	for optname in \
 		src-nat dst-nat any-nat mark event-mask zero label \
 		src orig-src dst orig-dst reply-src reply-dst protonum mask-src mask-dst; do
@@ -33,6 +41,7 @@ start_service() {
 	procd_set_param stdout 1
 	procd_set_param stderr 1
 	procd_set_param env ${APPNAME}_filter_script="$filter_script"
+	procd_set_param respawn 300 5 60
 	procd_close_instance
 }
 
