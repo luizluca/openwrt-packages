@@ -4,4 +4,12 @@
 		sed -r -f "$conntrackmon_filter_script"
 	else
 		cat
-	fi
+	fi &
+
+conntrack_pid=$(jobs -p)
+filter_pid=$!
+
+trap "kill -TERM $conntrack_pid" TERM
+trap "kill -INT $conntrack_pid" INT
+
+wait $filter_pid
