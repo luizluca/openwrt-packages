@@ -5,8 +5,8 @@ jobs:
       - image: docker.io/openwrtorg/packages-cci:v1.0.5
     environment:
       - SDK_HOST: "downloads.openwrt.org"
-      - SDK_PATH: "releases/19.07.2/targets/armvirt/32"
-      - SDK_FILE: "openwrt-sdk-19.07.2-armvirt-32_*.Linux-x86_64.tar.xz"
+      - SDK_PATH: "releases/19.07.6/targets/armvirt/32"
+      - SDK_FILE: "openwrt-sdk-19.07.6-armvirt-32_*.Linux-x86_64.tar.xz"
       - BRANCH: "openwrt-19.07"
     steps:
       - checkout:
