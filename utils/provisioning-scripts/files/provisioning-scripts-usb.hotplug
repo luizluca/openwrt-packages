@@ -25,7 +25,17 @@ if [ -e "$PROVISIONED_FLAG" ]; then
        	exit 0
 fi
 
-set -e 
+set -e
+
+log "Preloading FS modules..."
+for fsmods in /etc/modules.d/*-fs-*; do
+        while read -r fsmod; do
+                if ! lsmod | grep -q "^$fsmod "; then
+                        log "Loading FS module $fsmod"
+                        modprobe "$fsmod"
+                fi
+        done <"$fsmods"
+done
 
 tmpdir=$(mktemp -d -t provisioning-scripts.XXXXXXX)
 trap "rm -rf '$tmpdir'" EXIT
