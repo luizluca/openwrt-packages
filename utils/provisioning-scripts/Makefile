@@ -4,7 +4,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=provisioning-scripts
-PKG_VERSION:=1.0.1
+PKG_VERSION:=1.0.2
 PKG_RELEASE:=1
 PKG_MAINTAINER:=Luiz Angelo Daros de Luca <luizluca@gmail.com>
 PKG_LICENSE:=GPL-3.0-or-later
@@ -33,8 +33,9 @@ define Package/provisioning-scripts-usb
   SECTION:=utils
   CATEGORY:=Utilities
   TITLE:=Provisioning scripts using USB Storage
-#  URL:=
-  DEPENDS:=provisioning-scripts +block-mount +e2fsprogs +kmod-fs-ext4 +kmod-usb3 +kmod-usb2 +kmod-usb-storage +kmod-fs-vfat +kmod-fs-ntfs +kmod-nls-iso8859-1 +kmod-nls-cp850 +kmod-nls-utf8 
+  #URL:=
+  #DEPENDS:=provisioning-scripts +block-mount +e2fsprogs +kmod-fs-ext4 +kmod-usb3 +kmod-usb2 +kmod-usb-storage +kmod-fs-vfat +kmod-fs-ntfs +kmod-nls-iso8859-1 +kmod-nls-cp850 +kmod-nls-utf8 
+  DEPENDS:=provisioning-scripts +block-mount +kmod-usb3 +kmod-usb2 +kmod-usb-storage +kmod-fs-vfat +kmod-fs-ntfs +kmod-nls-iso8859-1 +kmod-nls-cp850 +kmod-nls-utf8 
   PKGARCH:=all
 endef
 
