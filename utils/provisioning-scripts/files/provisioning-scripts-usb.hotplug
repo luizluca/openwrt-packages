@@ -7,11 +7,6 @@ case "$ACTION" in
 	remove) exit 0 ;;
 esac
 
-case "$DEVTYPE" in
-	partition) true;;
-	*) exit 0 ;;
-esac
-
 log() {
 	tag=/etc/hotplug.d/block/01-provisioning-scripts-usb
 	echo "$tag: $*" >> /tmp/provisioning-scripts.log
