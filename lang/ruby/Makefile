@@ -11,7 +11,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ruby
-PKG_VERSION:=3.3.6
+PKG_VERSION:=3.4.1
 PKG_RELEASE:=1
 
 # First two numbes
@@ -19,7 +19,7 @@ PKG_ABI_VERSION:=$(subst $(space),.,$(wordlist 1, 2, $(subst .,$(space),$(PKG_VE
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://cache.ruby-lang.org/pub/ruby/$(PKG_ABI_VERSION)/
-PKG_HASH:=8dc48fffaf270f86f1019053f28e51e4da4cce32a36760a0603a9aee67d7fd8d
+PKG_HASH:=3d385e5d22d368b064c817a13ed8e3cc3f71a7705d7ed1bae78013c33aa7c87f
 PKG_MAINTAINER:=Luiz Angelo Daros de Luca <luizluca@gmail.com>
 PKG_LICENSE:=BSD-2-Clause
 PKG_LICENSE_FILES:=COPYING
@@ -252,13 +252,23 @@ endef
 define Package/ruby-abbrev/files
 /usr/lib/ruby/$(PKG_ABI_VERSION)/abbrev.rb
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/abbrev-*/
-/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/default/abbrev-*.gemspec
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/abbrev-*.gemspec
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/abbrev-*/
+endef
+define Package/ruby-abbrev/files-excluded
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/abbrev-*/LICENSE.txt
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/abbrev-*/README.md
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/abbrev-*/Rakefile
 endef
 
 define Package/ruby-base64/files
 /usr/lib/ruby/$(PKG_ABI_VERSION)/base64.rb
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/base64-*/
-/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/default/base64-*.gemspec
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/base64-*.gemspec
+endef
+define Package/ruby-base64/files-excluded
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/base64-*/LICENSE.txt
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/base64-*/README.md
 endef
 
 define Package/ruby-benchmark/files
@@ -272,7 +282,15 @@ define Package/ruby-bigdecimal/files
 /usr/lib/ruby/$(PKG_ABI_VERSION)/*/bigdecimal.so
 /usr/lib/ruby/$(PKG_ABI_VERSION)/bigdecimal/
 /usr/lib/ruby/$(PKG_ABI_VERSION)/bigdecimal.rb
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/bigdecimal-*/
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/default/bigdecimal-*.gemspec
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/bigdecimal-*.gemspec
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/extensions/*/$(PKG_ABI_VERSION)/bigdecimal-*/
+endef
+define Package/ruby-bigdecimal/files-excluded
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/bigdecimal-*/sample/*
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/bigdecimal-*/Rakefile
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/extensions/*/$(PKG_ABI_VERSION)/bigdecimal-*/gem.build_complete
 endef
 
 define Package/ruby-bundler/files
@@ -317,13 +335,21 @@ endef
 define Package/ruby-csv/files
 /usr/lib/ruby/$(PKG_ABI_VERSION)/csv.rb
 /usr/lib/ruby/$(PKG_ABI_VERSION)/csv/
-/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/default/csv-*.gemspec
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/csv-*/
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/csv-*.gemspec
 endef
 
 define Package/ruby-date/files
 /usr/lib/ruby/$(PKG_ABI_VERSION)/date.rb
 /usr/lib/ruby/$(PKG_ABI_VERSION)/*/date_core.so
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/default/date-*.gemspec
+endef
+define Package/ruby-csv/files-excluded
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/csv-*/doc/*
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/csv-*/LICENSE
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/csv-*/LICENSE.txt
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/csv-*/NEWS.md
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/csv-*/README.md
 endef
 
 define Package/ruby-debug/files
@@ -337,6 +363,8 @@ define Package/ruby-debug/files-excluded
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/debug-*/LICENSE.txt
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/debug-*/README.md
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/debug-*/TODO.md
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/debug-*/Rakefile
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/extensions/*/$(PKG_ABI_VERSION)/debug-*/gem.build_complete
 endef
 define Package/ruby-debug/install
 	$(INSTALL_DIR) $(1)/usr/bin
@@ -387,7 +415,11 @@ endef
 define Package/ruby-drb/files
 /usr/lib/ruby/$(PKG_ABI_VERSION)/drb.rb
 /usr/lib/ruby/$(PKG_ABI_VERSION)/drb
-/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/default/drb-*.gemspec
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/drb-*/
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/drb-*.gemspec
+endef
+define Package/ruby-drb/files-excluded
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/drb-*/LICENSE.txt
 endef
 
 define Package/ruby-enc/files
@@ -492,7 +524,13 @@ define Package/ruby-getoptlong/files
 /usr/lib/ruby/$(PKG_ABI_VERSION)/getoptlong.rb
 /usr/lib/ruby/$(PKG_ABI_VERSION)/getoptlong/
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/getoptlong-*/
-/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/default/getoptlong-*.gemspec
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/getoptlong-*.gemspec
+endef
+define Package/ruby-getoptlong/files-excluded
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/getoptlong-*/LICENSE.txt
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/getoptlong-*/README.md
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/getoptlong-*/Rakefile
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/getoptlong-*/sample/*
 endef
 
 define Package/ruby-io-console/files
@@ -557,6 +595,7 @@ define Package/ruby-minitest/files
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/minitest-*
 endef
 define Package/ruby-minitest/files-excluded
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/minitest-*/Rakefile
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/minitest-*/test
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/minitest-*/*.rdoc
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/minitest-*/*.txt
@@ -577,7 +616,13 @@ endef
 
 define Package/ruby-mutex_m/files
 /usr/lib/ruby/$(PKG_ABI_VERSION)/mutex_m.rb
-/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/default/mutex_m-*.gemspec
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/mutex_m-*/
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/mutex_m-*.gemspec
+endef
+define Package/ruby-mutex_m/files-excluded
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/mutex_m-*/BSDL
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/mutex_m-*/COPYING
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/mutex_m-*/README.md
 endef
 
 define Package/ruby-net-ftp/files
@@ -585,8 +630,11 @@ define Package/ruby-net-ftp/files
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/net-ftp-*.gemspec
 endef
 define Package/ruby-net-ftp/files-excluded
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/net-ftp-*/BSDL
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/net-ftp-*/COPYING
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/net-ftp-*/LICENSE.txt
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/net-ftp-*/README.md
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/net-ftp-*/Rakefile
 endef
 
 define Package/ruby-net-http/files
@@ -602,8 +650,12 @@ define Package/ruby-net-imap/files
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/net-imap-*.gemspec
 endef
 define Package/ruby-net-imap/files-excluded
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/net-imap-*/BSDL
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/net-imap-*/COPYING
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/net-imap-*/LICENSE.txt
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/net-imap-*/README.md
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/net-imap-*/Rakefile
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/net-imap-*/sample/*
 endef
 
 define Package/ruby-net-pop/files
@@ -613,6 +665,7 @@ endef
 define Package/ruby-net-pop/files-excluded
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/net-pop-*/LICENSE.txt
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/net-pop-*/README.md
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/net-pop-*/Rakefile
 endef
 
 define Package/ruby-net-protocol/files
@@ -633,7 +686,15 @@ endef
 define Package/ruby-nkf/files
 /usr/lib/ruby/$(PKG_ABI_VERSION)/kconv.rb
 /usr/lib/ruby/$(PKG_ABI_VERSION)/*/nkf.so
-/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/default/nkf-*.gemspec
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/extensions/*/$(PKG_ABI_VERSION)/nkf-*/nkf.so
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/nkf-*/*
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/nkf-*.gemspec
+endef
+define Package/ruby-nkf/files-excluded
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/nkf-*/*ext/java/*
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/nkf-*/Rakefile
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/nkf-*/LICENSE.txt
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/nkf-*/README.md
 endef
 
 define Package/ruby-objspace/files
@@ -646,7 +707,12 @@ define Package/ruby-observer/files
 /usr/lib/ruby/$(PKG_ABI_VERSION)/observer.rb
 /usr/lib/ruby/$(PKG_ABI_VERSION)/observer/
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/observer-*/
-/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/default/observer-*.gemspec
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/observer-*.gemspec
+endef
+define Package/ruby-observer/files-excluded
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/observer-*/LICENSE.txt
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/observer-*/README.md
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/observer-*/Rakefile
 endef
 
 define Package/ruby-open-uri/files
@@ -695,6 +761,9 @@ define Package/ruby-powerassert/files-excluded
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/power_assert-*/*.rdoc
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/power_assert-*/.travis.yml
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/power_assert-*/README.md
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/power_assert-*/BSDL
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/power_assert-*/COPYING
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/power_assert-*/Rakefile
 endef
 
 define Package/ruby-pp/files
@@ -714,6 +783,9 @@ endef
 define Package/ruby-prime/files-excluded
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/prime-*/LICENSE.txt
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/prime-*/README.md
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/prime-*/BSDL
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/prime-*/COPYING
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/prime-*/Rakefile
 endef
 
 define Package/ruby-prism/files
@@ -747,6 +819,17 @@ define Package/ruby-racc/files
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/racc-*/
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/racc-*.gemspec
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/extensions/*/$(PKG_ABI_VERSION)/racc-*/*
+endef
+define Package/ruby-racc/files-excluded
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/racc-*/BSDL
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/racc-*/COPYING
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/racc-*/LICENSE.txt
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/racc-*/README.md
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/racc-*/README.ja.rdoc
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/racc-*/README.rdoc
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/racc-*/Rakefile
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/racc-*/doc/*
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/extensions/*/$(PKG_ABI_VERSION)/racc-*/gem.build_complete
 endef
 define Package/ruby-racc/install
 	$(INSTALL_DIR) $(1)/usr/bin
@@ -787,6 +870,11 @@ define Package/ruby-rbs/files-excluded
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/rbs-*/test
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/rbs-*/sample
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/rbs-*/*.md
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/rbs-*/BSDL
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/rbs-*/COPYING
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/rbs-*/Rakefile
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/extensions/gems/rbs-*/Rakefile
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/extensions/*/$(PKG_ABI_VERSION)/rbs-*/gem.build_complete
 endef
 define Package/ruby-rbs/install
 	$(INSTALL_DIR) $(1)/usr/bin
@@ -826,6 +914,16 @@ define Package/ruby-reline/files
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/default/reline-*.gemspec
 endef
 
+define Package/ruby-repl_type_completor/files
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/repl_type_completor-*/*
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/repl_type_completor-*.gemspec
+endef
+define Package/ruby-repl_type_completor/files-excluded
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/repl_type_completor-*/Rakefile
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/repl_type_completor-*/LICENSE.txt
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/repl_type_completor-*/README.md
+endef
+
 define Package/ruby-resolv/files
 /usr/lib/ruby/$(PKG_ABI_VERSION)/resolv.rb
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/default/resolv-*.gemspec
@@ -836,7 +934,13 @@ endef
 
 define Package/ruby-resolv-replace/files
 /usr/lib/ruby/$(PKG_ABI_VERSION)/resolv-replace.rb
-/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/default/resolv-replace*.gemspec
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/resolv-replace-*/*
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/resolv-replace*.gemspec
+endef
+define Package/ruby-resolv-replace/files-excluded
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/resolv-replace-*/LICENSE.txt
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/resolv-replace-*/README.md
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/resolv-replace-*/Rakefile
 endef
 
 define Package/ruby-rexml/files
@@ -854,8 +958,14 @@ define Package/ruby-rexml/files-excluded
 endef
 
 define Package/ruby-rinda/files
-/usr/lib/ruby/$(PKG_ABI_VERSION)/rinda
-/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/default/rinda-*.gemspec
+/usr/lib/ruby/$(PKG_ABI_VERSION)/rinda/*
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/rinda-*/
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/rinda-*.gemspec
+endef
+define Package/ruby-rinda/files-excluded
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/rinda-*/LICENSE.txt
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/rinda-*/README.md
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/rinda-*/Rakefile
 endef
 
 define Package/ruby-ripper/files
@@ -921,6 +1031,7 @@ define Package/ruby-stringio/files
 endef
 
 define Package/ruby-strscan/files
+/usr/lib/ruby/$(PKG_ABI_VERSION)/strscan/strscan.rb
 /usr/lib/ruby/$(PKG_ABI_VERSION)/*/strscan.so
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/default/strscan-*.gemspec
 endef
@@ -940,7 +1051,15 @@ endef
 define Package/ruby-syslog/files
 /usr/lib/ruby/$(PKG_ABI_VERSION)/*/syslog.so
 /usr/lib/ruby/$(PKG_ABI_VERSION)/syslog/logger.rb
-/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/default/syslog-*.gemspec
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/syslog-*/
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/extensions/*/$(PKG_ABI_VERSION)/syslog-*/syslog_ext.so
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/specifications/syslog-*.gemspec
+endef
+define Package/ruby-syslog/files-excluded
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/syslog-*/LICENSE.txt
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/syslog-*/README.md
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/syslog-*/Rakefile
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/syslog-*/ext/syslog/syslog.txt
 endef
 
 define Package/ruby-testunit/files
@@ -948,10 +1067,13 @@ define Package/ruby-testunit/files
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/test-unit-*
 endef
 define Package/ruby-testunit/files-excluded
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/test-unit-*/BSDL
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/test-unit-*/COPYING
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/test-unit-*/doc
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/test-unit-*/test
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/test-unit-*/sample
 /usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/test-unit-*/*.md
+/usr/lib/ruby/gems/$(PKG_ABI_VERSION)/gems/test-unit-*/Rakefile
 endef
 
 define Package/ruby-time/files
@@ -1180,6 +1302,7 @@ $(eval $(call RubyBuildPackage,rdoc,RDoc produces HTML and command-line document
 $(eval $(call RubyBuildPackage,readline-ext,support for native GNU readline,+libncurses +libreadline))
 $(eval $(call RubyBuildPackage,readline,loads readline-ext(native) or reline(ruby),+ruby-reline))
 $(eval $(call RubyBuildPackage,reline,alternative to readline-ext in pure ruby,+ruby-fiddle +ruby-forwardable +ruby-io-console +ruby-tempfile))
+$(eval $(call RubyBuildPackage,repl_type_completor,type based completor for REPL,))
 $(eval $(call RubyBuildPackage,resolv,DNS resolver library,+ruby-securerandom +ruby-timeout))
 $(eval $(call RubyBuildPackage,resolv-replace,Replace Socket DNS with Resolv,+ruby-resolv))
 $(eval $(call RubyBuildPackage,rexml,XML toolkit,+ruby-enc +ruby-forwardable +ruby-pp +ruby-set +ruby-stringio +ruby-strscan))
