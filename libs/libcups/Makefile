@@ -9,16 +9,16 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cups
-PKG_VERSION:=2.2.12
-PKG_RELEASE:=2
+PKG_VERSION:=2.4.19
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-source.tar.gz
-PKG_SOURCE_URL:=https://github.com/apple/cups/releases/download/v$(PKG_VERSION)/
-PKG_HASH:=0f61ab449e4748a24c6ab355b481ff7691247a140d327b2b7526fce34b7f9aa8
+PKG_SOURCE_URL:=https://github.com/OpenPrinting/cups/releases/download/v$(PKG_VERSION)/
+PKG_HASH:=820984b12a67f98705785aae2dd1347fe0ac097828001d4583ff64574aed6389
 PKG_MAINTAINER:=Luiz Angelo Daros de Luca <luizluca@gmail.com>
-PKG_LICENSE:=GPL-2.0
+PKG_LICENSE:=Apache-2.0
 PKG_LICENSE_FILES:=LICENSE.txt
-PKG_CPE_ID:=cpe:/a:apple:cups
+PKG_CPE_ID:=cpe:/a:openprinting:cups
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -72,11 +72,6 @@ define Build/Compile
 		DSTROOT="$(PKG_INSTALL_DIR)" \
 		STRIP="/bin/true" \
 		libcups.so.2 install-libs install-headers
-	$(MAKE) -C $(PKG_BUILD_DIR)/filter \
-		$(TARGET_CONFIGURE_OPTS) \
-		DSTROOT="$(PKG_INSTALL_DIR)" \
-		STRIP="/bin/true" \
-		libcupsimage.so.2 install-libs install-headers
 	$(INSTALL_DIR) $(PKG_INSTALL_DIR)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/cups-config $(PKG_INSTALL_DIR)/usr/bin
 endef
