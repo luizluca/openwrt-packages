@@ -8,17 +8,18 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=cups
-PKG_VERSION:=2.2.12
-PKG_RELEASE:=2
+PKG_NAME:=libcups
+PKG_VERSION:=3.0.3
+PKG_RELEASE:=1
+PKG_INSTALL:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-source.tar.gz
-PKG_SOURCE_URL:=https://github.com/apple/cups/releases/download/v$(PKG_VERSION)/
-PKG_HASH:=0f61ab449e4748a24c6ab355b481ff7691247a140d327b2b7526fce34b7f9aa8
+PKG_SOURCE_URL:=https://github.com/OpenPrinting/libcups/releases/download/v$(PKG_VERSION)/
+PKG_HASH:=4607ade9ec6f8b250e30c19a7d032219e2ef80d0e76af0bd0e6bd25715243664
 PKG_MAINTAINER:=Luiz Angelo Daros de Luca <luizluca@gmail.com>
-PKG_LICENSE:=GPL-2.0
+PKG_LICENSE:=Apache-2.0
 PKG_LICENSE_FILES:=LICENSE.txt
-PKG_CPE_ID:=cpe:/a:apple:cups
+PKG_CPE_ID:=cpe:/a:openprinting:cups
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -31,7 +32,7 @@ define Package/libcups
 $(call Package/cups/Default)
   SECTION:=libs
   CATEGORY:=Libraries
-  DEPENDS:=+zlib +libpthread +libpng +libjpeg +libusb-1.0
+  DEPENDS:=+zlib +libpthread +libpng +libjpeg +libusb-1.0 +libavahi-nodbus-support
   TITLE:=Common UNIX Printing System - Core library
   BUILDONLY:=1
 endef
@@ -66,31 +67,15 @@ CONFIGURE_ARGS+=--with-cups-user="nobody" \
 		UNAME="Linux" \
 		LIBS="$(TARGET_LDFLAGS) -lz -lpng -ljpeg"
 
-define Build/Compile
-	$(MAKE) -C $(PKG_BUILD_DIR)/cups \
-		$(TARGET_CONFIGURE_OPTS) \
-		DSTROOT="$(PKG_INSTALL_DIR)" \
-		STRIP="/bin/true" \
-		libcups.so.2 install-libs install-headers
-	$(MAKE) -C $(PKG_BUILD_DIR)/filter \
-		$(TARGET_CONFIGURE_OPTS) \
-		DSTROOT="$(PKG_INSTALL_DIR)" \
-		STRIP="/bin/true" \
-		libcupsimage.so.2 install-libs install-headers
-	$(INSTALL_DIR) $(PKG_INSTALL_DIR)/usr/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/cups-config $(PKG_INSTALL_DIR)/usr/bin
-endef
-
 define Build/InstallDev
-	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/cups-config $(1)/usr/bin/
-	$(INSTALL_DIR) $(2)/bin
-	$(LN) $(STAGING_DIR)/usr/bin/cups-config $(2)/bin
-
 	$(INSTALL_DIR) $(1)/usr/include
-	$(CP) $(PKG_INSTALL_DIR)/usr/include/cups $(1)/usr/include/
+	$(CP) $(PKG_INSTALL_DIR)/usr/include/libcups3 $(1)/usr/include/
+	
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib*/libcups*.so* $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcups*.so* $(1)/usr/lib/
+	
+	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/pkgconfig/cups*.pc $(1)/usr/lib/pkgconfig/
 endef
 
 $(eval $(call BuildPackage,libcups))
